@@ -1,0 +1,10 @@
+doctrine:
+  orm:
+    auto_mapping: true
+    mappings:
+      SoapService:
+        is_bundle: false
+        type: attribute
+        dir: "%kernel.project_dir%/src/SoapService/Customer/Infrastructure/Persistence"
+        prefix: 'Src\SoapService\Customer\Infrastructure\Persistence'
+        alias: SoapService
