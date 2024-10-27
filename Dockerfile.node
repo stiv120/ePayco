@@ -1,0 +1,17 @@
+#Imagen de Node
+FROM node:20
+
+# Creamos el directorio de trabajo
+WORKDIR /rest-service
+
+# Copiamos package.json y package-lock.json para instalar dependencias
+COPY rest-service/package*.json ./
+
+# Instalamos dependencias de la aplicación
+RUN npm install && npm install -g nodemon
+
+# Copiamos el código fuente de la aplicación
+COPY ./rest-service .
+
+# Exponemos el puerto 3000
+EXPOSE 3000

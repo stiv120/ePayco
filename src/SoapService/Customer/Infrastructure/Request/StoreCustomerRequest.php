@@ -15,10 +15,10 @@ class StoreCustomerRequest extends FormRequest
     {
         $reglasString = 'required|string|max:255';
         return [
-            'email' => "{$reglasString}|email",
+            'email' => "{$reglasString}|email|unique:clientes,email",
             'nombres' => $reglasString,
             'celular' => $reglasString,
-            'documento' => $reglasString
+            'documento' => "{$reglasString}|unique:clientes,documento"
         ];
     }
 
@@ -29,7 +29,9 @@ class StoreCustomerRequest extends FormRequest
             'email.required' => 'El campo email es requerido',
             'nombres.required' => 'El campo nombres es requerido',
             'celular.required' => 'El campo celular es requerido',
-            'documento.required' => 'El campo documento es requerido'
+            'email.unique' => 'Ya existe un cliente con este email.',
+            'documento.required' => 'El campo documento es requerido',
+            'documento.unique' => 'Ya existe un cliente con este documento.'
         ];
     }
 }

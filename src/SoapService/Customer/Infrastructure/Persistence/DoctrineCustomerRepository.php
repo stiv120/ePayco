@@ -17,11 +17,9 @@ class DoctrineCustomerRepository implements CustomerRepositoryInterface
 
     public function save(Customer $customer)
     {
-        $this->entityManager->persist($customer);
+        $doctrineEntity = DoctrineCustomerEntity::fromCustomer($customer);
+        $this->entityManager->persist($doctrineEntity);
         $this->entityManager->flush();
-        return true;
+        return $doctrineEntity->toCustomer();
     }
 }
-
-
-

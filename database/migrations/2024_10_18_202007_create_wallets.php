@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
             $table->decimal('balance', 15, 2)->default(0);
-            $table->timestamps();
+            $table->timestamp('fecha_creacion')->useCurrent();
+            $table->timestamp('fecha_actualizacion')->nullable()->useCurrentOnUpdate();
         });
     }
 
