@@ -56,6 +56,12 @@ class WalletTransaction implements JsonSerializable
         return $this->estado;
     }
 
+    public function setEstado(TransactionStatusEnum $estado): self
+    {
+        $this->estado = $estado;
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [

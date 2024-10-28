@@ -8,7 +8,6 @@ exports.recargarBilletera = async (req, res) => {
         );
         res.json(response.data);
     } catch (error) {
-        console.log(error);
         res.status(error?.status).json({
             success: false,
             cod_error: error?.response?.status,

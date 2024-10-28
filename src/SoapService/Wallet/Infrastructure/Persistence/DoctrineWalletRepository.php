@@ -15,13 +15,15 @@ class DoctrineWalletRepository implements WalletRepositoryInterface
         $this->entityManager = $entityManager;
     }
 
-    public function save(Wallet $wallet)
+    public function save($wallet)
     {
-        $doctrineEntity = DoctrineWalletEntity::fromWallet($wallet);
-        $this->entityManager->persist($doctrineEntity);
+        if ($wallet instanceof Wallet) {
+            $doctrineEntity = DoctrineWalletEntity::fromWallet($wallet);
+            $this->entityManager->persist($doctrineEntity);
+        } else {
+            $doctrineEntity = $wallet;
+        }
         $this->entityManager->flush();
-        $this->entityManager->refresh($doctrineEntity);
-
         return $doctrineEntity->toWallet();
     }
 

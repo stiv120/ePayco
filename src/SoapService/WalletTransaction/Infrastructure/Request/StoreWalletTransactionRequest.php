@@ -3,19 +3,23 @@
 namespace Src\SoapService\WalletTransaction\Infrastructure\Request;
 
 use App\Http\Requests\FormRequest;
+use Src\SoapService\Wallet\Application\UseCases\GetWalletByIdUseCase;
 use Src\SoapService\WalletTransaction\Application\UseCases\GenerateTokenUseCase;
 use Src\SoapService\WalletTransaction\Application\UseCases\GenerateSessionIdUseCase;
 
 class StoreWalletTransactionRequest extends FormRequest
 {
     private $generateTokenUseCase;
+    private $getWalletByIdUseCase;
     private $generateSessionIdUseCase;
 
     public function __construct(
         GenerateTokenUseCase $generateTokenUseCase,
+        GetWalletByIdUseCase $getWalletByIdUseCase,
         GenerateSessionIdUseCase $generateSessionIdUseCase
     ) {
         $this->generateTokenUseCase = $generateTokenUseCase;
+        $this->getWalletByIdUseCase = $getWalletByIdUseCase;
         $this->generateSessionIdUseCase = $generateSessionIdUseCase;
     }
 
@@ -37,6 +41,14 @@ class StoreWalletTransactionRequest extends FormRequest
             'token' => $this->generateTokenUseCase->execute(),
             'session_id' => $this->generateSessionIdUseCase->execute()
         ]);
+    }
+
+    public function validateAmount()
+    {
+        $wallet = $this->getWalletByIdUseCase->execute($this->billetera_id);
+        if ($this->monto > $wallet->getValor()) {
+            $this->failedValidation(["Saldo insuficiente! tienes: {$wallet->getValor()} en tu billetera."]);
+        }
     }
 
     public function messages()

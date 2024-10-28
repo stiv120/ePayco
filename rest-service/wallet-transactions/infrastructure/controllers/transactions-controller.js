@@ -8,6 +8,23 @@ exports.realizarPago = async (req, res) => {
         );
         res.json(response.data);
     } catch (error) {
+        res.status(error?.status).json({
+            success: false,
+            cod_error: error?.response?.status,
+            message_error: error?.response?.data?.message_error,
+            data: error?.response?.data?.data,
+        });
+    }
+};
+
+exports.confirmarPago = async (req, res) => {
+    try {
+        const response = await axios.post(
+            `http://webserver/api/soap/billeteras/transacciones/confirmar-pago/${req.params.transaccion}`,
+            req.body
+        );
+        res.json(response.data);
+    } catch (error) {
         console.log(error);
         res.status(error?.status).json({
             success: false,

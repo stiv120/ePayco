@@ -16,17 +16,15 @@ class RechargeWalletUseCase
 
     public function execute(array $data)
     {
-        $existingWallet = $this->walletRepository->findByFields(
-            [
-                'celular' => $data['celular'],
-                'documento' => $data['documento']
-            ]
-        );
+        $doctrineEntity = $this->walletRepository->findByFields([
+            'celular' => $data['celular'],
+            'documento' => $data['documento']
+        ]);
 
-        if ($existingWallet) {
-            $existingWallet->valor = $existingWallet->valor + $data['valor'];
-        }
-        $wallet = $existingWallet ?? new Wallet($data);
-        return $this->walletRepository->save($wallet);
+        $entityToSave = $doctrineEntity
+            ? tap($doctrineEntity, fn($entity) => $entity->setValor($entity->getValor() + $data['valor']))
+            : new Wallet($data);
+
+        return $this->walletRepository->save($entityToSave);
     }
 }
