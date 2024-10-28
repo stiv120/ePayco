@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('billeteras', function (Blueprint $table) {
+        Schema::create('transacciones_billeteras', function (Blueprint $table) {
             $table->id();
-            $table->string('celular');
-            $table->string('documento');
-            $table->double('valor', 15, 8);
+            $table->foreignId('billetera_id')
+                  ->constrained('billeteras')
+                  ->onDelete('restrict');
+            $table->string('token', 6);
+            $table->string('id_sesion')->unique();
+            $table->decimal('monto', 10, 2);
+            $table->enum('estado', ['completada', 'pendiente', 'fallida'])
+                  ->default('pendiente');
             $table->timestamp('fecha_creacion')->useCurrent();
             $table->timestamp('fecha_actualizacion')->nullable()->useCurrentOnUpdate();
         });
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('billeteras');
+        Schema::dropIfExists('transacciones_billeteras');
     }
 };
