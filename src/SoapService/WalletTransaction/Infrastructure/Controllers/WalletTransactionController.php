@@ -6,15 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Exceptions\CustomJsonException;
 use Src\SoapService\WalletTransaction\Application\UseCases\PurchasePaymentUseCase;
 use Src\SoapService\WalletTransaction\Infrastructure\Request\StoreWalletTransactionRequest;
+use Src\SoapService\WalletTransaction\Application\UseCases\ConfirmWalletTransactionUseCase;
+use Src\SoapService\WalletTransaction\Infrastructure\Request\ConfirmWalletTransactionRequest;
 
 class WalletTransactionController extends Controller
 {
     private $purchasePaymentUseCase;
-
+    private $confirmWalletTransactionUseCase;
     public function __construct(
         PurchasePaymentUseCase $purchasePaymentUseCase,
+        ConfirmWalletTransactionUseCase $confirmWalletTransactionUseCase,
     ) {
         $this->purchasePaymentUseCase = $purchasePaymentUseCase;
+        $this->confirmWalletTransactionUseCase = $confirmWalletTransactionUseCase;
     }
 
     /**
@@ -38,7 +42,29 @@ class WalletTransactionController extends Controller
                     'success' => true,
                     'data' => [
                         'wallet_transaction' => $walletTransaction->jsonSerialize(),
-                        'message' => 'Pago pendiente por confirmar.'
+                        'message' => 'Pago pendiente por confirmar, al correo fueron enviados los datos para confirmar el pago, por favor revisa tu correo.'
+                    ]
+                ],
+            201
+        );
+    }
+
+    public function confirmarPagoCompra(ConfirmWalletTransactionRequest $request, $transaccionId)
+    {
+        $walletTransaction = $this->confirmWalletTransactionUseCase->execute($transaccionId);
+        if (!$walletTransaction) {
+            throw new CustomJsonException(
+                [
+                    'message_error' => 'Error al confirmar el pago de la compra.'
+                ]
+            );
+        }
+        return response()->json(
+                [
+                    'success' => true,
+                    'data' => [
+                        'wallet_transaction' => $walletTransaction->jsonSerialize(),
+                        'message' => 'Pago confirmado.'
                     ]
                 ],
             201

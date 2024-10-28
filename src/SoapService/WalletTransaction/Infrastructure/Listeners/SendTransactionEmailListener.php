@@ -31,7 +31,7 @@ class SendTransactionEmailListener
                 'documento' => $wallet->getDocumento()
             ]
         );
-        if ($customer?->getEmail()) {
+        if ($customer->getEmail()) {
             Mail::to($customer->getEmail())->send(
                 new TransactionCreatedMail($walletTransaction)
             );

@@ -4,8 +4,9 @@ namespace Src\SoapService\WalletTransaction\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Src\SoapService\WalletTransaction\Domain\Entities\WalletTransaction;
-use Src\SoapService\WalletTransaction\Domain\Repositories\WalletTransactionRepositoryInterface;
 use Src\SoapService\WalletTransaction\Domain\Events\WalletTransactionCreatedEvent;
+use Src\SoapService\WalletTransaction\Domain\Repositories\WalletTransactionRepositoryInterface;
+use Src\SoapService\WalletTransaction\Infrastructure\Persistence\DoctrineWalletTransactionEntity;
 
 class DoctrineWalletTransactionRepository implements WalletTransactionRepositoryInterface
 {
@@ -16,16 +17,16 @@ class DoctrineWalletTransactionRepository implements WalletTransactionRepository
         $this->entityManager = $entityManager;
     }
 
-    public function save(WalletTransaction $walletTransaction)
+    public function save($entity)
     {
-        $doctrineEntity = DoctrineWalletTransactionEntity::fromWalletTransaction($walletTransaction);
-        $this->entityManager->persist($doctrineEntity);
+        if ($entity instanceof WalletTransaction) {
+            $doctrineEntity = DoctrineWalletTransactionEntity::fromWalletTransaction($entity);
+            $this->entityManager->persist($doctrineEntity);
+        } else {
+            $doctrineEntity = $entity;
+        }
+
         $this->entityManager->flush();
-        $this->entityManager->refresh($doctrineEntity);
-
-        // Disparar evento de dominio
-        event(new WalletTransactionCreatedEvent($doctrineEntity->toWalletTransaction()));
-
         return $doctrineEntity->toWalletTransaction();
     }
 
