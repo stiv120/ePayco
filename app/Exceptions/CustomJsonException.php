@@ -7,20 +7,25 @@ use Exception;
 class CustomJsonException extends Exception
 {
     protected $data;
-    protected $cod_error;
-    protected $message_error;
+    protected $code;
+    protected $success;
+    protected $message;
 
     public function __construct($data)
     {
+        $this->code = $data['code'] ?? 500;
         $this->data = $data['data'] ?? 'error';
-        $this->cod_error = $data['cod_error'] ?? 500;
-        $this->message_error = $data['message_error'] ??  'Error interno del servidor';
+        $this->success = $data['success'] ?? false;
+        $this->message = $data['message'] ??  'Error interno del servidor';
     }
 
     public function render()
     {
         return response()->json([
-            $this->data => $this->message_error,
-        ], $this->cod_error);
+            'data' => $this->data,
+            'cod_error' => $this->code,
+            'success' => $this->success,
+            'message_error' => $this->message
+        ], $this->code);
     }
 }

@@ -19,10 +19,5 @@ class Wallet extends Model
      */
     protected $table = 'billeteras';
 
-    protected $fillable = ['cliente_id', 'balance'];
-
-    public function cliente()
-    {
-        return $this->belongsTo(Customer::class, 'cliente_id');
-    }
+    protected $fillable = ['documento', 'celular', 'valor'];
 }
