@@ -19,5 +19,18 @@ class Customer extends Model
      */
     protected $table = 'clientes';
 
-    protected $fillable = ['nombres', 'documento', 'email', 'celular'];
+    protected $fillable = [
+        'nombres',
+        'documento',
+        'celular',
+        'email'
+    ];
+
+    protected $dates = [
+        'fecha_creacion',
+        'fecha_actualizacion'
+    ];
+
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 }

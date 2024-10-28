@@ -19,5 +19,17 @@ class Wallet extends Model
      */
     protected $table = 'billeteras';
 
-    protected $fillable = ['documento', 'celular', 'valor'];
+    protected $fillable = [
+        'documento',
+        'celular',
+        'valor'
+    ];
+
+    protected $dates = [
+        'fecha_creacion',
+        'fecha_actualizacion'
+    ];
+
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 }
