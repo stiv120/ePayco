@@ -18,8 +18,8 @@ class StoreWalletRequest extends FormRequest
     public function rules()
     {
         return [
-            'valor' => 'required|numeric|min:1',
             'celular' => 'required|string|max:255',
+            'valor' => 'required|numeric|min:20000',
             'documento' => 'required|string|max:255'
         ];
     }
@@ -53,6 +53,7 @@ class StoreWalletRequest extends FormRequest
     public function messages()
     {
         return [
+            'valor.min' => 'El monto mínimo debe ser 20000',
             'valor.required' => 'El campo valor es requerido',
             'celular.required' => 'El campo celular es requerido',
             'documento.required' => 'El campo documento es requerido'

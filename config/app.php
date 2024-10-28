@@ -122,4 +122,6 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'MAIL_DEBUG_TO_ADDRESS' => env('MAIL_DEBUG_TO_ADDRESS', null)
 ];
