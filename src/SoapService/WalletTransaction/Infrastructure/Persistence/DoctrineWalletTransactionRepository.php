@@ -4,7 +4,6 @@ namespace Src\SoapService\WalletTransaction\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Src\SoapService\WalletTransaction\Domain\Entities\WalletTransaction;
-use Src\SoapService\WalletTransaction\Domain\Events\WalletTransactionCreatedEvent;
 use Src\SoapService\WalletTransaction\Domain\Repositories\WalletTransactionRepositoryInterface;
 use Src\SoapService\WalletTransaction\Infrastructure\Persistence\DoctrineWalletTransactionEntity;
 

@@ -6,15 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Exceptions\CustomJsonException;
 use Src\SoapService\Wallet\Infrastructure\Request\StoreWalletRequest;
 use Src\SoapService\Wallet\Application\UseCases\RechargeWalletUseCase;
+use Src\SoapService\Wallet\Infrastructure\Request\CheckBalanceRequest;
+use Src\SoapService\Wallet\Application\UseCases\GetWalletByFieldsUseCase;
 
 class WalletController extends Controller
 {
     private $rechargeWalletUseCase;
+    private $getFieldsWalletUseCase;
 
     public function __construct(
         RechargeWalletUseCase $rechargeWalletUseCase,
+        GetWalletByFieldsUseCase $getFieldsWalletUseCase
     ) {
         $this->rechargeWalletUseCase = $rechargeWalletUseCase;
+        $this->getFieldsWalletUseCase = $getFieldsWalletUseCase;
     }
 
     /**
@@ -42,6 +47,31 @@ class WalletController extends Controller
                     ]
                 ],
             201
+        );
+    }
+
+    /**
+     * Consulta el saldo de la billetera.
+     * @param CheckBalanceRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws CustomJsonException si hay un error durante la consulta del saldo.
+     */
+    public function consultarSaldo(CheckBalanceRequest $request)
+    {
+        $wallet = $this->getFieldsWalletUseCase->execute($request->only('celular', 'documento'));
+        if (!$wallet) {
+            throw new CustomJsonException(
+                [
+                    'message_error' => 'Error al consultar el saldo de la billetera.'
+                ]
+            );
+        }
+        return response()->json(
+            [
+                'success' => true,
+                'data' => ['saldo' => $wallet->getValor()]
+            ],
+            200
         );
     }
 }

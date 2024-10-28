@@ -2,32 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class WalletTransaction extends Model
 {
     use HasFactory;
 
-    /**
-     * Atributo que especifica el nombre de la secuencia asociado a la Tabla/Modelo
-     */
-    public $sequence = 's_transacciones_billeteras';
-
-    /**
-     * Atributo que especifica el nombre de la tabla asociado al modelo.
-     */
     protected $table = 'transacciones_billeteras';
 
     protected $fillable = [
+        'billetera_id',
         'monto',
         'token',
-        'estado',
         'session_id',
-        'billetera_id'
+        'estado'
     ];
 
-    public function billetera()
+    protected $dates = [
+        'fecha_creacion',
+        'fecha_actualizacion'
+    ];
+
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
+
+    public function wallet()
     {
         return $this->belongsTo(Wallet::class, 'billetera_id');
     }

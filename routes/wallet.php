@@ -8,6 +8,8 @@ use Src\SoapService\WalletTransaction\Infrastructure\Controllers\WalletTransacti
 Route::prefix('soap/billeteras')->group(function () {
     //Ruta para recargar la billetera
     Route::post('recargar', [WalletController::class, 'recargarBilletera']);
+    //Ruta para consultar el saldo de la billetera
+    Route::post('consultar-saldo', [WalletController::class, 'consultarSaldo']);
 
     //Grupo para las transacciones de la billetera
     Route::prefix('transacciones')->group(function () {

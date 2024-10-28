@@ -13,6 +13,7 @@ class WalletTransactionController extends Controller
 {
     private $purchasePaymentUseCase;
     private $confirmWalletTransactionUseCase;
+
     public function __construct(
         PurchasePaymentUseCase $purchasePaymentUseCase,
         ConfirmWalletTransactionUseCase $confirmWalletTransactionUseCase,
@@ -23,7 +24,7 @@ class WalletTransactionController extends Controller
 
     /**
      * Realiza el pago de una compra.
-     * @param StoreWalletRequest $request
+     * @param StoreWalletTransactionRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @throws CustomJsonException si hay un error durante el proceso de creación del recurso.
      */
@@ -49,6 +50,13 @@ class WalletTransactionController extends Controller
         );
     }
 
+    /**
+     * Confirma el pago de una compra.
+     * @param ConfirmWalletTransactionRequest $request
+     * @param int $transaccionId ID de la transacción a confirmar
+     * @return \Illuminate\Http\JsonResponse
+     * @throws CustomJsonException si hay un error durante el proceso de confirmación del pago.
+     */
     public function confirmarPagoCompra(ConfirmWalletTransactionRequest $request, $transaccionId)
     {
         $walletTransaction = $this->confirmWalletTransactionUseCase->execute($transaccionId);
