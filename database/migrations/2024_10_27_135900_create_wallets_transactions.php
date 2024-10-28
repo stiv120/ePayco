@@ -17,8 +17,8 @@ return new class extends Migration
                   ->constrained('billeteras')
                   ->onDelete('restrict');
             $table->string('token', 6);
-            $table->string('id_sesion')->unique();
-            $table->decimal('monto', 10, 2);
+            $table->string('session_id')->unique();
+            $table->double('monto', 15, 8);
             $table->enum('estado', ['completada', 'pendiente', 'fallida'])
                   ->default('pendiente');
             $table->timestamp('fecha_creacion')->useCurrent();

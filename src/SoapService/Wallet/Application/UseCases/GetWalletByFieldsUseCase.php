@@ -1,7 +1,6 @@
 <?php
 
-namespace Src\Product\Application\UseCases;
-
+namespace Src\SoapService\Wallet\Application\UseCases;
 use Src\SoapService\Wallet\Domain\Repositories\WalletRepositoryInterface;
 
 class GetWalletByFieldsUseCase
