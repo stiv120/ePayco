@@ -165,6 +165,17 @@ Ruta de acceso: http://localhost:3000/transacciones-billeteras/realizar-pago mé
 
 Ruta de acceso: http://localhost:3000/transacciones-billeteras/confirmar-pago/{idBilletera} método POST
 
+Nota: para realizar la confirmación del pago se envía al correo el token y el id de la sesión, se debe configurar el correo en el archivo .env con los siguientes datos:
+
+-   MAIL_MAILER=smtp
+-   MAIL_FROM_ADDRESS=ejemplo@ejemplo.com
+-   MAIL_HOST=smtp.example.com
+-   MAIL_PORT=465
+-   MAIL_USERNAME=ejemplo@ejemplo.com
+-   MAIL_PASSWORD=tu_contraseña_aquí ## o el token del correo electrónico
+-   MAIL_ENCRYPTION=ssl
+-   MAIL_FROM_NAME="${APP_NAME}"
+
 ## Consultar saldo
 
 Ruta de acceso: http://localhost:3000/billeteras/consultar-saldo método POST
