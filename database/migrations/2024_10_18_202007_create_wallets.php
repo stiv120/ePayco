@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('billeteras', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
-            $table->decimal('balance', 15, 2)->default(0);
+            $table->string('celular');
+            $table->string('documento');
+            $table->double('valor', 15, 8);
             $table->timestamp('fecha_creacion')->useCurrent();
             $table->timestamp('fecha_actualizacion')->nullable()->useCurrentOnUpdate();
         });

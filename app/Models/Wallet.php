@@ -19,10 +19,17 @@ class Wallet extends Model
      */
     protected $table = 'billeteras';
 
-    protected $fillable = ['cliente_id', 'balance'];
+    protected $fillable = [
+        'documento',
+        'celular',
+        'valor'
+    ];
 
-    public function cliente()
-    {
-        return $this->belongsTo(Customer::class, 'cliente_id');
-    }
+    protected $dates = [
+        'fecha_creacion',
+        'fecha_actualizacion'
+    ];
+
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_actualizacion';
 }

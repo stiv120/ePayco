@@ -78,20 +78,21 @@ class DoctrineCustomerEntity
     public static function fromCustomer(Customer $customer): self
     {
         $entity = new self();
-        $entity->setEmail($customer->email);
-        $entity->setCelular($customer->celular);
-        $entity->setNombres($customer->nombres);
-        $entity->setDocumento($customer->documento);
+        $entity->setEmail($customer->getEmail());
+        $entity->setCelular($customer->getCelular());
+        $entity->setNombres($customer->getNombres());
+        $entity->setDocumento($customer->getDocumento());
         return $entity;
     }
 
     public function toCustomer(): Customer
     {
         return new Customer([
+            'id' => $this->getId(),
             'email' => $this->getEmail(),
             'celular' => $this->getCelular(),
             'nombres' => $this->getNombres(),
-            'documento' => $this->getDocumento(),
+            'documento' => $this->getDocumento()
         ]);
     }
 }

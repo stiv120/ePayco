@@ -27,8 +27,21 @@ class CustomerController extends Controller
     {
         $customer = $this->registerCustomerUseCase->execute($request->all());
         if (!$customer) {
-            throw new CustomJsonException(['message_error' => 'Error al registrar al cliente.']);
+            throw new CustomJsonException(
+                [
+                    'message_error' => 'Error al registrar al cliente.'
+                ]
+            );
         }
-        return response()->json(['success' => 'Cliente registrado correctamente.'], 201);
+        return response()->json(
+                [
+                    'success' => true,
+                    'data' => [
+                        'customer' => $customer->jsonSerialize(),
+                        'message' => 'Cliente registrado correctamente.'
+                    ]
+                ],
+            201
+        );
     }
 }

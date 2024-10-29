@@ -20,6 +20,14 @@ class DoctrineCustomerRepository implements CustomerRepositoryInterface
         $doctrineEntity = DoctrineCustomerEntity::fromCustomer($customer);
         $this->entityManager->persist($doctrineEntity);
         $this->entityManager->flush();
+        $this->entityManager->refresh($doctrineEntity);
         return $doctrineEntity->toCustomer();
+    }
+
+    public function findByFields($fields)
+    {
+        return $this->entityManager
+            ->getRepository(DoctrineCustomerEntity::class)
+            ->findOneBy($fields);
     }
 }

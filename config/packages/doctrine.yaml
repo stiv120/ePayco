@@ -5,6 +5,9 @@ doctrine:
       SoapService:
         is_bundle: false
         type: attribute
-        dir: "%kernel.project_dir%/src/SoapService/Customer/Infrastructure/Persistence"
-        prefix: 'Src\SoapService\Customer\Infrastructure\Persistence'
+        dirs:
+          - "%kernel.project_dir%/src/SoapService/Customer/Infrastructure/Persistence"
+          - "%kernel.project_dir%/src/SoapService/Wallet/Infrastructure/Persistence"
+          - "%kernel.project_dir%/src/SoapService/WalletTransaction/Infrastructure/Persistence"
+        prefix: 'Src\SoapService'
         alias: SoapService
