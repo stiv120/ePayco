@@ -110,6 +110,12 @@ Dado que nuestra aplicación se ha integrado con Docker, si queremos usarlo, deb
     php artisan migrate
     ```
 
+8. Ejecutamos el worker de colas utilizando el siguiente comando:
+
+    ```sh
+    php artisan queue:work
+    ```
+
 ## Pruebas
 
 1. Para ejecutar las pruebas, accedemos a nuestro contenedor mediante el siguiente comando:
