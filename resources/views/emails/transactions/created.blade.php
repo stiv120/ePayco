@@ -14,6 +14,6 @@
         <li><strong>Monto:</strong> ${{ number_format($monto, 2) }}</li>
     </ul>
 
-    <p>Por favor, guarde estos datos para futuras referencias.</p>
+    <p>Para realizar la confirmación del pago, ingresa el token y el id de sesión brindados.</p>
 </body>
 </html>
