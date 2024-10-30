@@ -53,10 +53,10 @@ class ConfirmWalletTransactionRequest extends FormRequest
     {
         return [
             'token.required' => 'El token es requerido',
-            'token.max' => 'El token debe ser de 6 dígitos',
+            'token.max' => 'El token debe ser máximode 6 dígitos',
             'session_id.required' => 'El id de sesión es requerido',
             'token.exists' => 'El token no coincide con el registrado en la transacción.',
-            'session_id.exists' => 'El id de sesión no coincide con la registrada en la transacción.'
+            'session_id.exists' => 'El id de sesión no coincide con el registrado en la transacción.'
         ];
     }
 }

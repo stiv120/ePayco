@@ -4,43 +4,95 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Customer;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Src\SoapService\Customer\Infrastructure\Persistence\DoctrineCustomerEntity;
+use Src\SoapService\Customer\Infrastructure\Persistence\Factory\CustomerFactory;
 
 class CustomerControllerTest extends TestCase
 {
-    protected $user;
+    use RefreshDatabase;
 
-    /**
-     * Set up the environment for each test.
-     * Creates a new user instance.
-     */
+    protected $user;
+    protected $em;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create(); // Create a user
+        $this->user = User::factory()->create();
+        $this->em = app('em');
     }
 
-    /**
-     * Test the store method for products.
-     * Ensures that a new product can be created and checks if it's stored in the database.
-     * @return void
-     */
-    public function testRegistroCliente()
+    public function testRegistroClienteExitoso()
     {
-        $customerData = Customer::factory()->make()->toArray();
+        $customerData = [
+            'nombres' => 'Juan',
+            'celular' => '1234567890',
+            'documento' => '1234567890',
+            'email' => 'juan@example.com'
+        ];
 
-        $response = $this->actingAs($this->user)->postJson('/api/soap/clientes/registrar', $customerData);
+        $response = $this->actingAs($this->user)
+            ->postJson('/api/soap/clientes/registrar', $customerData);
 
         $response->assertStatus(201)
-                 ->assertJson(
-                    [
-                        'success' => true,
-                        'data' => [
-                            'customer' => $customerData,
-                            'message' => 'Cliente registrado correctamente.'
-                        ]
-                    ]
-                );
-        $this->assertDatabaseHas('clientes', $customerData);
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'message' => 'Cliente registrado correctamente.'
+                ]
+            ]);
+
+        $cliente = $this->em->getRepository(DoctrineCustomerEntity::class)
+            ->findOneBy(['email' => $customerData['email']]);
+
+        $this->assertNotNull($cliente);
+        $this->assertEquals($customerData['email'], $cliente->getEmail());
+        $this->assertEquals($customerData['nombres'], $cliente->getNombres());
+    }
+
+    public function testRegistroClienteDatosInvalidos()
+    {
+        $customerData = [
+            'nombres' => '', // Nombre vacío
+            'celular' => '123', // Celular muy corto
+            'documento' => 'abc', // Documento no numérico
+            'email' => 'correo-invalido' // Email inválido
+        ];
+
+        $response = $this->actingAs($this->user)
+            ->postJson('/api/soap/clientes/registrar', $customerData);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'message_error' => 'Errores de validación.'
+            ]);
+    }
+
+    public function testRegistroClienteEmailDuplicado()
+    {
+        // Crear cliente existente
+        CustomerFactory::create([
+            'email' => 'pruebajuan@example.com'
+        ]);
+
+        $customerData = [
+            'nombres' => 'Juan Nuevo',
+            'celular' => '9876543210',
+            'documento' => '9876543210',
+            'email' => 'pruebajuan@example.com' // Email duplicado
+        ];
+
+        $response = $this->actingAs($this->user)
+            ->postJson('/api/soap/clientes/registrar', $customerData);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                'success' => false,
+                'message_error' => 'Errores de validación.',
+                'data' => [
+                    'email' => ['Ya existe un cliente con este email.']
+                ]
+            ]);
     }
 }
