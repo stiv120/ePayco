@@ -35,7 +35,7 @@ Laravel es accesible, potente y proporciona las herramientas necesarias para apl
 
 ## Acerca de este proyecto
 
-El siguiente proyecto es un sistema ePayco El sistema debe poder registrar un cliente, cargar dinero a la billetera, hacer una compra con un código de confirmación y consultar el saldo de la billetera, consta de dos componentes principales:
+El siguiente proyecto es un sistema ePayco, debe poder registrar un cliente, cargar dinero a la billetera, hacer una compra con un código de confirmación y consultar el saldo de la billetera. Consta de dos componentes principales:
 
 ## 1. Sistema ePayco
 
