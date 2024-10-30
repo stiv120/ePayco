@@ -37,6 +37,7 @@ class StoreWalletTransactionRequest extends FormRequest
      */
     protected function passedValidation()
     {
+        $this->validateAmount();
         $this->merge([
             'token' => $this->generateTokenUseCase->execute(),
             'session_id' => $this->generateSessionIdUseCase->execute()
